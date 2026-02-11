@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://backend-production-a5689.up.railway.app';
 
 // Helper function to get auth token
 const getAuthToken = () => {
@@ -8,7 +8,7 @@ const getAuthToken = () => {
 // Helper function for API requests
 const apiRequest = async (endpoint, options = {}) => {
   const token = getAuthToken();
-  
+
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -21,11 +21,9 @@ const apiRequest = async (endpoint, options = {}) => {
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
     const data = await response.json();
-
     if (!response.ok) {
       throw new Error(data.message || 'API request failed');
     }
-
     return data;
   } catch (error) {
     console.error('API Error:', error);
@@ -42,7 +40,6 @@ export const authAPI = {
     });
     return data.data;
   },
-
   register: async (name, email, password, role) => {
     const data = await apiRequest('/auth/register', {
       method: 'POST',
@@ -50,7 +47,6 @@ export const authAPI = {
     });
     return data.data;
   },
-
   getCurrentUser: async () => {
     const data = await apiRequest('/auth/me');
     return data.data.user;
@@ -63,7 +59,6 @@ export const hierarchyAPI = {
     const data = await apiRequest('/hierarchy/clients');
     return data.data;
   },
-
   getClientHierarchy: async (clientId) => {
     const data = await apiRequest(`/hierarchy/clients/${clientId}`);
     return data.data;
@@ -76,12 +71,10 @@ export const clientAPI = {
     const data = await apiRequest('/clients');
     return data.data;
   },
-
   getById: async (id) => {
     const data = await apiRequest(`/clients/${id}`);
     return data.data;
   },
-
   create: async (clientData) => {
     const data = await apiRequest('/clients', {
       method: 'POST',
@@ -89,7 +82,6 @@ export const clientAPI = {
     });
     return data.data;
   },
-
   update: async (id, clientData) => {
     const data = await apiRequest(`/clients/${id}`, {
       method: 'PUT',
@@ -97,7 +89,6 @@ export const clientAPI = {
     });
     return data.data;
   },
-
   delete: async (id) => {
     const data = await apiRequest(`/clients/${id}`, {
       method: 'DELETE',
@@ -112,12 +103,10 @@ export const diagramAPI = {
     const data = await apiRequest(`/diagrams/function/${functionId}`);
     return data.data;
   },
-
   getById: async (id) => {
     const data = await apiRequest(`/diagrams/${id}`);
     return data.data;
   },
-
   create: async (functionId, diagramData) => {
     const data = await apiRequest(`/diagrams/function/${functionId}`, {
       method: 'POST',
@@ -125,7 +114,6 @@ export const diagramAPI = {
     });
     return data.data;
   },
-
   update: async (id, diagramData) => {
     const data = await apiRequest(`/diagrams/${id}`, {
       method: 'PUT',
@@ -133,14 +121,12 @@ export const diagramAPI = {
     });
     return data.data;
   },
-
   delete: async (id) => {
     const data = await apiRequest(`/diagrams/${id}`, {
       method: 'DELETE',
     });
     return data;
   },
-
   saveContent: async (id, nodes, edges) => {
     const data = await apiRequest(`/diagrams/${id}/content`, {
       method: 'POST',
